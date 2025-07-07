@@ -24,5 +24,5 @@ public enum TokenType {
     COMMENT,
 
     // Outros
-    EOF, ERROR
+    EOF, INCLUDE, IFNDEF, IFDEF, ENDIF, DEFINE, KEYWORD, SYMBOL, UNKNOWN, INT, ERROR
 }
