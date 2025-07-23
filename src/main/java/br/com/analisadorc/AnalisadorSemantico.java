@@ -5,11 +5,11 @@ public class AnalisadorSemantico {
     private Map<String, Variavel> tabelaSimbolos = new HashMap<>();
 
     public void analisar(List<Token> tokens) {
+        // 1ª PASSAGEM: declarações
         for (int i = 0; i < tokens.size(); i++) {
             Token token = tokens.get(i);
 
-            // Detectar declaração: ex. int x;
-            if (token.getType() == TokenType.INT || token.getType().name().equals("FLOAT")) {
+            if (token.getLexeme().equals("int") || token.getLexeme().equals("float") || token.getLexeme().equals("char")) {
                 if (i + 1 < tokens.size()) {
                     Token prox = tokens.get(i + 1);
                     if (prox.getType() == TokenType.IDENTIFIER) {
@@ -26,18 +26,59 @@ public class AnalisadorSemantico {
                     }
                 }
             }
+        }
+        // 2ª PASSAGEM: usos e atribuições
+        for (int i = 0; i < tokens.size(); i++) {
+            Token token = tokens.get(i);
 
-            // Detectar uso da variável (excluindo quando for uma declaração)
             if (token.getType() == TokenType.IDENTIFIER) {
-                boolean isDeclaracao = (i > 0 &&
-                        (tokens.get(i - 1).getType() == TokenType.INT ||
-                                tokens.get(i - 1).getLexeme().equals("float")));
+                String nomeVar = token.getLexeme();
 
-                if (!isDeclaracao && !tabelaSimbolos.containsKey(token.getLexeme())) {
+                // Ignora se for declaração
+                boolean isDeclaracao = (i > 0 &&
+                        (tokens.get(i - 1).getLexeme().equals("int") ||
+                                tokens.get(i - 1).getLexeme().equals("float") ||
+                                tokens.get(i - 1).getLexeme().equals("char")));
+
+                if (isDeclaracao) continue;
+
+                // Verifica se foi declarada
+                if (!tabelaSimbolos.containsKey(nomeVar)) {
                     System.err.println("Erro semântico na linha " + token.getLine() +
-                            ": variável '" + token.getLexeme() + "' não declarada.");
+                            ": variável '" + nomeVar + "' não declarada.");
+                }
+
+                // Verifica tipo na atribuição
+                if (i + 2 < tokens.size() && tokens.get(i + 1).getLexeme().equals("=")) {
+                    Token valor = tokens.get(i + 2);
+                    Variavel var = tabelaSimbolos.get(nomeVar);
+
+                    if (var != null) {
+                        String tipoValor = switch (valor.getType()) {
+                            case INT -> "int";
+                            case FLOAT -> "float";
+                            case CHAR -> "char";
+                            case IDENTIFIER -> {
+                                Variavel origem = tabelaSimbolos.get(valor.getLexeme());
+                                if (origem != null) yield origem.getTipo();
+                                else {
+                                    System.err.println("Erro semântico na linha " + valor.getLine() +
+                                            ": variável '" + valor.getLexeme() + "' não declarada.");
+                                    yield "indefinido";
+                                }
+                            }
+                            default -> "indefinido";
+                        };
+
+                        if (!tipoValor.equals("indefinido") && !tipoValor.equals(var.getTipo())) {
+                            System.err.println("Erro semântico na linha " + valor.getLine() +
+                                    ": tipo incompatível. Esperado '" + var.getTipo() +
+                                    "', mas recebeu '" + tipoValor + "'.");
+                        }
+                    }
                 }
             }
         }
+
     }
 }
