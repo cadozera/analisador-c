@@ -41,8 +41,11 @@ Este projeto é um analisador léxico e semântico de código C, desenvolvido em
 ▶️ 3. Compile e rode o analisador
 Se estiver usando linha de comando:
 
+```shell
 javac src/main/java/br/com/analisadorc/*.java
 java -cp src/main/java br.com.analisadorc.Main exemplos/exemplo1.c
+```
+
 
 💬 Exemplo de saída
 ```shell
