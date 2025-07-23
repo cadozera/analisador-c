@@ -28,14 +28,23 @@ analisador-c/
 ├── src/main/java/br/com/analisadorc/
 
 │ ├── AnalisadorLexico.java
+
 │ ├── AnalisadorSemantico.java
+
 │ ├── Token.java
+
 │ ├── TokenType.java
+
 │ ├── Variavel.java
+
 │ └── Main.java
+
 ├── exemplos/
+
 │ └── exemplo1.c
+
 ├── build.gradle (opcional)
+
 └── README.md
 
 ▶️ 3. Compile e rode o analisador
