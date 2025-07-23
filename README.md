@@ -24,7 +24,9 @@ Este projeto é um analisador léxico e semântico de código C, desenvolvido em
 ## 📂 Estrutura
 
 analisador-c/
+
 ├── src/main/java/br/com/analisadorc/
+
 │ ├── AnalisadorLexico.java
 │ ├── AnalisadorSemantico.java
 │ ├── Token.java
