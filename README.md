@@ -24,8 +24,6 @@ Este projeto é um analisador léxico e semântico de código C, desenvolvido em
 ## 📂 Estrutura
 
 ```shell
-  $ tree
-  .
   analisador-c/
   ├── src/main/java/br/com/analisadorc/
   │ ├── AnalisadorLexico.java
@@ -47,9 +45,7 @@ javac src/main/java/br/com/analisadorc/*.java
 java -cp src/main/java br.com.analisadorc.Main exemplos/exemplo1.c
 
 💬 Exemplo de saída
-txt
-Copy
-Edit
+```shell
 Analisando linha 1: int x;
 Token{type=KEYWORD, lexeme='int', line=1}
 Token{type=IDENTIFIER, lexeme='x', line=1}
@@ -58,6 +54,7 @@ Variável 'x' do tipo 'int' declarada.
 Analisando linha 5: y = 5;
 Token{type=IDENTIFIER, lexeme='y', line=5}
 Erro semântico na linha 5: variável 'y' não declarada.
+```
 
 🧭 Próximos passos
 
